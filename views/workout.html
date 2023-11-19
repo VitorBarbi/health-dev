@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Workout</title>
+</head>
+
+<body>
+    <h2>Session Input</h2>
+
+<!-- Session form -->
+    <form id = "sessionForm">
+        <p>
+        <label for = "userNickname">User userNickname:</label>
+        <input type = "text" id = "userNickname" name = "userNickname" required>
+        </p>
+
+        <p>        
+        <label for = "sessionDate">Date:</label>
+        <input type = "date" id = "sessionDate" name = "sessionDate" required>
+        </p>
+
+        <p>        
+        <label for = "nutritionPhase">Nutrition Phase:</label>
+        <input type = "text" id = "nutritionPhase" name = "nutritionPhase" required>
+        </p>
+
+        <p>        
+        <label for = "sessionPhase">Session Phase:</label>
+        <input type = "text" id = "sessionPhase" name = "sessionPhase" required>
+        </p>
+
+        <p>        
+        <label for = "sessionGroup">Group:</label>
+        <input type = "text" id = "sessionGroup" name = "sessionGroup" required>
+        </p>
+
+        <p>        
+        <label for = "exercisePosition">Position:</label>
+        <input type = "number" id = "exercisePosition" name = "exercisePosition" required>
+        </p>
+
+        <p>        
+        <label for = "exerciseName">Exercise:</label>
+        <input type = "text" id = "exerciseName" name = "exerciseName" required>
+        </p>
+
+        <p>        
+        <label for = "exerciseWeight">Weight:</label>
+        <input type = "number" id = "exerciseWeight" name = "exerciseWeight" required>
+        </p>
+
+        <p>        
+        <label for = "exerciseReps">Reps:</label>
+        <input type = "number" id = "exerciseReps" name = "exerciseReps" required>
+        </p>   
+
+        <p>        
+        <label for = "exerciseSets">Sets:</label>
+        <input type = "number" id = "exerciseSets" name = "exerciseSets" required>
+        </p>
+
+        <p>        
+        <label for = "exerciseInterval">Interval:</label>
+        <input type = "number" id = "exerciseInterval" name = "exerciseInterval" required>
+        </p>
+
+        <p>
+        <button type="button" id="submitSessionButton">Save Session</button>
+        </p>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            keepSomeInputs();
+
+            const submitButton = document.getElementById('submitSessionButton');
+
+            submitButton.addEventListener('click', submitSessionForm);
+        });
+
+        function keepSomeInputs() {
+            // Get fields data
+            const userNicknameField = document.getElementById('userNickname');
+            const sessionDateField = document.getElementById('sessionDate');
+            const nutritionPhaseField = document.getElementById('nutritionPhase');
+            const sessionPhaseField = document.getElementById('sessionPhase');
+            const sessionGroupField = document.getElementById('sessionGroup');
+            const exerciseSetsField = document.getElementById('exerciseSets');
+            const exerciseIntervalField = document.getElementById('exerciseInterval');
+
+            // Check if is there local data 
+            if (localStorage.getItem('formData')) {
+                const formData = JSON.parse(localStorage.getItem('formData'));
+
+                // Fill fields with last form values
+                userNicknameField.value = formData.userNickname;
+                sessionDateField.value = formData.sessionDate;
+                nutritionPhaseField.value = formData.nutritionPhase;
+                sessionPhaseField.value = formData.sessionPhase;
+                sessionGroupField.value = formData.sessionGroup;
+                exerciseSetsField.value = formData.exerciseSets;
+                exerciseIntervalField.value = formData.exerciseInterval;
+            }
+
+            // Add listener 
+            document.getElementById('sessionForm').addEventListener('submit', (event) => {
+                const formData = {
+                    userNickname: userNicknameField.value,
+                    sessionDate: sessionDateField.value,
+                    nutritionPhase: nutritionPhaseField.value,
+                    sessionPhase: sessionPhaseField.value,
+                    sessionGroup: sessionGroupField.value,
+                    exerciseSets: exerciseSetsField.value,
+                    exerciseInterval: exerciseIntervalField.value,
+                };
+
+                // Save data in local storage
+                localStorage.setItem('formData', JSON.stringify(formData));
+            });
+        }
+ 
+        function submitSessionForm() {
+            // Get form data
+            const userNickname = document.getElementById('userNickname').value;
+            const sessionDate = document.getElementById('sessionDate').value;
+            const sessionPhase = document.getElementById('sessionPhase').value;
+            const sessionGroup = document.getElementById('sessionGroup').value;
+            const exercisePosition = document.getElementById('exercisePosition').value;
+            const exerciseName = document.getElementById('exerciseName').value;
+            const exerciseWeight = document.getElementById('exerciseWeight').value;
+            const exerciseReps = document.getElementById('exerciseWeight').value;
+            const exerciseSets = document.getElementById('exerciseSets').value;
+            const exerciseInterval = document.getElementById('exerciseInterval').value;
+            const nutritionPhase = document.getElementById('nutritionPhase').value;
+
+            // Create JSON payload
+            const data = {
+                userNickname: userNickname,
+                sessionDate: sessionDate,
+                sessionPhase: sessionPhase,
+                sessionGroup: sessionGroup,
+                exercisePosition: exercisePosition,
+                exerciseName: exerciseName,
+                exerciseWeight: exerciseWeight,
+                exerciseReps: exerciseReps,
+                exerciseSets: exerciseSets,
+                exerciseInterval: exerciseInterval,
+                nutritionPhase: nutritionPhase
+            }
+
+            // Send JSON data to the server
+            fetch('workout/save_workout_session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify(data)
+            })
+
+            .then(response => response.json())
+
+            .then(result => {
+                console.log('Success:', result);
+            })
+
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+
+</html> 
