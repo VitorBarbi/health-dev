@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path')
 
 const app = express();
 
@@ -21,11 +22,14 @@ mongoose.connect(mongoURL)
 // Parse incoming JSON requests
 app.use(bodyParser.json());
 
+// Public
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Routes
-const homeRouter = require('./routes/homeRoute');
+const indexRouter = require('./routes/indexRoute');
 const workoutRouter = require('./routes/workoutRoute');
 
-app.use('/', homeRouter);
+app.use('/', indexRouter);
 app.use('/workout', workoutRouter);
 
 // Set up server

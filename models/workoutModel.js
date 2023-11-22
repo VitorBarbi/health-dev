@@ -18,6 +18,6 @@ const workoutSessionSchema = new Schema({
 });
 
 // Create model
-const WorkoutSession = mongoose.model('WorkoutSession', workoutSessionSchema);
+const WorkoutSession = mongoose.model('WorkoutSession', workoutSessionSchema, 'workout_sessions');
 
 module.exports = WorkoutSession;

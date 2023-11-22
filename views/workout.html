@@ -6,12 +6,12 @@
 </head>
 
 <body>
+<!-- Session -->
     <h2>Session Input</h2>
 
-<!-- Session form -->
     <form id = "sessionForm">
         <p>
-        <label for = "userNickname">User userNickname:</label>
+        <label for = "userNickname">User Nickname:</label>
         <input type = "text" id = "userNickname" name = "userNickname" required>
         </p>
 
@@ -70,105 +70,56 @@
         </p>
     </form>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            keepSomeInputs();
+    <div id="formMessageContainer" class="show-message"></div>
 
-            const submitButton = document.getElementById('submitSessionButton');
+<!-- Records -->   
+    <h2>Records</h2>
 
-            submitButton.addEventListener('click', submitSessionForm);
-        });
+    <label for="selectSessionGroup">Group:</label>
+    <select id="selectSessionGroup" name="sessionGroup"></select>
 
-        function keepSomeInputs() {
-            // Get fields data
-            const userNicknameField = document.getElementById('userNickname');
-            const sessionDateField = document.getElementById('sessionDate');
-            const nutritionPhaseField = document.getElementById('nutritionPhase');
-            const sessionPhaseField = document.getElementById('sessionPhase');
-            const sessionGroupField = document.getElementById('sessionGroup');
-            const exerciseSetsField = document.getElementById('exerciseSets');
-            const exerciseIntervalField = document.getElementById('exerciseInterval');
+    <p>
+        <button id="fetchWorkoutSessionsButton" type="button">Fetch Workout Sessions</button>
+    </p>
 
-            // Check if is there local data 
-            if (localStorage.getItem('formData')) {
-                const formData = JSON.parse(localStorage.getItem('formData'));
+    <div id="workoutSessionsTableContainer" class="table-container">
+        <table id="workoutSessionsTable">
+            <thead>
+                <tr>
+                    <th>USER NICKNAME</th>
+                    <th>DATE</th>
+                    <th>NUTRITION PHASE</th>
+                    <th>SESSION PHASE</th>
+                    <th>GROUP</th>
+                    <th>POSITION</th>
+                    <th>EXERCISE</th>
+                    <th>WEIGHT</th>
+                    <th>REPS</th>
+                    <th>SETS</th>
+                    <th>INTERVAL</th>
+                    <th>SESSION ID</th>
+                </tr>
+            </thead>
+            <tbody id="workoutSessionsTableBody"></tbody>
+        </table>
+    </div>
 
-                // Fill fields with last form values
-                userNicknameField.value = formData.userNickname;
-                sessionDateField.value = formData.sessionDate;
-                nutritionPhaseField.value = formData.nutritionPhase;
-                sessionPhaseField.value = formData.sessionPhase;
-                sessionGroupField.value = formData.sessionGroup;
-                exerciseSetsField.value = formData.exerciseSets;
-                exerciseIntervalField.value = formData.exerciseInterval;
-            }
+<!-- Session Delete -->  
+    <h2>Session Delete</h2>
 
-            // Add listener 
-            document.getElementById('sessionForm').addEventListener('submit', (event) => {
-                const formData = {
-                    userNickname: userNicknameField.value,
-                    sessionDate: sessionDateField.value,
-                    nutritionPhase: nutritionPhaseField.value,
-                    sessionPhase: sessionPhaseField.value,
-                    sessionGroup: sessionGroupField.value,
-                    exerciseSets: exerciseSetsField.value,
-                    exerciseInterval: exerciseIntervalField.value,
-                };
+    <p>
+        <label for="_id">Session ID:</label>
+        <input type="text" id="_id" name="_id" required>
+    </p>
 
-                // Save data in local storage
-                localStorage.setItem('formData', JSON.stringify(formData));
-            });
-        }
- 
-        function submitSessionForm() {
-            // Get form data
-            const userNickname = document.getElementById('userNickname').value;
-            const sessionDate = document.getElementById('sessionDate').value;
-            const sessionPhase = document.getElementById('sessionPhase').value;
-            const sessionGroup = document.getElementById('sessionGroup').value;
-            const exercisePosition = document.getElementById('exercisePosition').value;
-            const exerciseName = document.getElementById('exerciseName').value;
-            const exerciseWeight = document.getElementById('exerciseWeight').value;
-            const exerciseReps = document.getElementById('exerciseWeight').value;
-            const exerciseSets = document.getElementById('exerciseSets').value;
-            const exerciseInterval = document.getElementById('exerciseInterval').value;
-            const nutritionPhase = document.getElementById('nutritionPhase').value;
+    <p>
+    <button type="button" id="deleteSessionButton">Delete Session</button>
+    </p>
 
-            // Create JSON payload
-            const data = {
-                userNickname: userNickname,
-                sessionDate: sessionDate,
-                sessionPhase: sessionPhase,
-                sessionGroup: sessionGroup,
-                exercisePosition: exercisePosition,
-                exerciseName: exerciseName,
-                exerciseWeight: exerciseWeight,
-                exerciseReps: exerciseReps,
-                exerciseSets: exerciseSets,
-                exerciseInterval: exerciseInterval,
-                nutritionPhase: nutritionPhase
-            }
+    <div id="deleteMessageContainer" class="show-message"></div>
 
-            // Send JSON data to the server
-            fetch('workout/save_workout_session', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }, 
-                body: JSON.stringify(data)
-            })
-
-            .then(response => response.json())
-
-            .then(result => {
-                console.log('Success:', result);
-            })
-
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    </script>
 </body>
 
-</html> 
+<script src="/js/script.js"></script>
+
+</html>
